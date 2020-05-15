@@ -26,15 +26,19 @@ const int stepPulseMicrosec = 1;
 const int resetStepMicrosec = 300;
 #define DEFAULT_ACCEL_TABLE_SIZE (sizeof(defaultAccelTable)/sizeof(*defaultAccelTable))
 
-SwitecX12::SwitecX12(unsigned int steps, unsigned char pinStep, unsigned char pinDir)
+SwitecX12::SwitecX12(unsigned int steps, unsigned char pinStep, unsigned char pinDir, unsigned char pinReset)
+
 {
   this->steps = steps;
   this->pinStep = pinStep;
   this->pinDir = pinDir;
+  this->pinReset = pinReset;
   pinMode(pinStep, OUTPUT);
   pinMode(pinDir, OUTPUT);
+  pinMode(pinReset, OUTPUT);
   digitalWrite(pinStep, LOW);
   digitalWrite(pinDir, LOW);
+  digitalWrite(pinReset, LOW);
   pinMode(13, OUTPUT);
 
   dir = 0;
@@ -45,6 +49,7 @@ SwitecX12::SwitecX12(unsigned int steps, unsigned char pinStep, unsigned char pi
 
   accelTable = defaultAccelTable;
   maxVel = defaultAccelTable[DEFAULT_ACCEL_TABLE_SIZE-1][0]; // last value in table.
+  digitalWrite(pinReset, HIGH);
 }
 
 void SwitecX12::step(int dir)

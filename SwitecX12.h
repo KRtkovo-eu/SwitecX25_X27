@@ -6,6 +6,7 @@ class SwitecX12 {
   public:
     unsigned char pinStep;
     unsigned char pinDir;
+    unsigned char pinReset;
     unsigned int currentStep;      // step we are currently at
     unsigned int targetStep;       // target we are moving to
     unsigned int steps;            // total steps available
@@ -16,7 +17,7 @@ class SwitecX12 {
     unsigned int vel;              // steps travelled under acceleration
     char dir;                      // direction -1,0,1
     boolean stopped;               // true if stopped
-    SwitecX12(unsigned int steps, unsigned char pinStep, unsigned char pinDir);
+    SwitecX12(unsigned int steps, unsigned char pinStep, unsigned char pinDir, unsigned char pinReset);
 
     //void stepUp();
     void step(int dir);
