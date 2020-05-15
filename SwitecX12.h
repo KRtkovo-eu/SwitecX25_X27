@@ -4,6 +4,7 @@
 
 class SwitecX12 {
   public:
+    bool debug = false;
     unsigned char pinStep;
     unsigned char pinDir;
     unsigned char pinReset;
@@ -15,13 +16,14 @@ class SwitecX12 {
     unsigned short (*accelTable)[2]; // accel table can be modified.
     unsigned int maxVel;           // fastest vel allowed
     unsigned int vel;              // steps travelled under acceleration
-    char dir;                      // direction -1,0,1
+    int dir;                       // direction -1,0,1
     boolean stopped;               // true if stopped
     SwitecX12(unsigned int steps, unsigned char pinStep, unsigned char pinDir, unsigned char pinReset);
 
     //void stepUp();
     void step(int dir);
     void zero();
+    void full();
     void stepTo(int position);
     void advance();
     void update();

@@ -13,8 +13,8 @@
 // This table defines the acceleration curve.
 // 1st value is the speed step, 2nd value is delay in microseconds
 // 1st value in each row must be > 1st value in subsequent row
-// 1st value in last row should be == maxVel, must be <= maxVel
-static unsigned short defaultAccelTable[][2] = {
+// 1st value in last row is used for maxVel
+static unsigned short olddefaultAccelTable[][2] = {
   {   20, 800},
   {   50, 400},
   {  100, 200},
@@ -22,8 +22,16 @@ static unsigned short defaultAccelTable[][2] = {
   {  300, 90}
 };
 
+static unsigned short defaultAccelTable[][2] = {
+  {    20, 420},
+  {    50, 300},
+  {   100, 200},
+  {   150, 150},
+  {   300, 138}
+};
+
 const int stepPulseMicrosec = 1;
-const int resetStepMicrosec = 300;
+const int resetStepMicrosec = 400;
 #define DEFAULT_ACCEL_TABLE_SIZE (sizeof(defaultAccelTable)/sizeof(*defaultAccelTable))
 
 SwitecX12::SwitecX12(unsigned int steps, unsigned char pinStep, unsigned char pinDir, unsigned char pinReset)
@@ -60,6 +68,9 @@ void SwitecX12::step(int dir)
   delayMicroseconds(stepPulseMicrosec);
   digitalWrite(pinStep, LOW);
   currentStep += dir;
+  if (currentStep > 65000) {
+    currentStep = 0;
+  }
 }
 
 void SwitecX12::stepTo(int position)
@@ -83,7 +94,16 @@ void SwitecX12::zero()
 {
   currentStep = steps - 1;
   stepTo(0);
-  targetStep = 0;
+  currentStep = targetStep = 0;
+  vel = 0;
+  dir = 0;
+}
+
+void SwitecX12::full()
+{
+  currentStep = 0;
+  stepTo(steps-1);
+  currentStep = targetStep = steps-1;
   vel = 0;
   dir = 0;
 }
@@ -110,6 +130,17 @@ void SwitecX12::advance()
   // determine delta, number of steps in current direction to target.
   // may be negative if we are headed away from target
   int delta = dir>0 ? targetStep-currentStep : currentStep-targetStep;
+ 
+if (debug) {
+Serial.print("  target ");
+Serial.print(targetStep);
+Serial.print("  current ");
+Serial.print(currentStep);
+Serial.print("  vel ");
+Serial.print(vel);
+Serial.print("  delta ");
+Serial.println(delta);
+}
 
   if (delta>0) {
     // case 1 : moving towards target (maybe under accel or decel)
