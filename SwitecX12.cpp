@@ -14,6 +14,8 @@
 // 1st value is the speed step, 2nd value is delay in microseconds
 // 1st value in each row must be > 1st value in subsequent row
 // 1st value in last row is used for maxVel
+
+// original X12 table
 static unsigned short olddefaultAccelTable[][2] = {
   {   20, 800},
   {   50, 400},
@@ -22,8 +24,17 @@ static unsigned short olddefaultAccelTable[][2] = {
   {  300, 90}
 };
 
+// X25 table *4, /4
 static unsigned short defaultAccelTable[][2] = {
-  {    20, 420},
+  {   80, 750},
+  {  200, 375},
+  {  400, 250},
+  {  600, 200},
+  { 1200, 150}
+};
+
+static unsigned short newdefaultAccelTable[][2] = {
+  {    20, 400},
   {    50, 300},
   {   100, 200},
   {   150, 150},
@@ -47,7 +58,7 @@ SwitecX12::SwitecX12(unsigned int steps, unsigned char pinStep, unsigned char pi
   digitalWrite(pinStep, LOW);
   digitalWrite(pinDir, LOW);
   digitalWrite(pinReset, LOW);
-  pinMode(13, OUTPUT);
+//  pinMode(13, OUTPUT);
 
   dir = 0;
   vel = 0;
@@ -62,8 +73,9 @@ SwitecX12::SwitecX12(unsigned int steps, unsigned char pinStep, unsigned char pi
 
 void SwitecX12::step(int dir)
 {
-  digitalWrite(pinDir, dir > 0 ? LOW : HIGH);
-  digitalWrite(13, vel == maxVel ? HIGH : LOW);
+  digitalWrite(pinDir, dir > 0 ? HIGH : LOW);
+//  digitalWrite(pinDir, dir > 0 ? LOW : HIGH);
+//  digitalWrite(13, vel == maxVel ? HIGH : LOW);
   digitalWrite(pinStep, HIGH);
   delayMicroseconds(stepPulseMicrosec);
   digitalWrite(pinStep, LOW);
