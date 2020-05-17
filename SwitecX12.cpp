@@ -34,11 +34,11 @@ static unsigned short defaultAccelTable[][2] = {
 };
 
 static unsigned short newdefaultAccelTable[][2] = {
-  {    20, 400},
-  {    50, 300},
-  {   100, 200},
-  {   150, 150},
-  {   300, 138}
+  {    80, 750},
+  {   100, 350},
+  {   150, 200},
+  {   200, 150},
+  {   300,  90}
 };
 
 const int stepPulseMicrosec = 1;
@@ -67,7 +67,9 @@ SwitecX12::SwitecX12(unsigned int steps, unsigned char pinStep, unsigned char pi
   targetStep = 0;
 
   accelTable = defaultAccelTable;
-  maxVel = defaultAccelTable[DEFAULT_ACCEL_TABLE_SIZE-1][0]; // last value in table.
+  accelTable = newdefaultAccelTable;
+//  maxVel = defaultAccelTable[DEFAULT_ACCEL_TABLE_SIZE-1][0]; // last value in table.
+  maxVel = accelTable[DEFAULT_ACCEL_TABLE_SIZE-1][0]; // last value in table.
   digitalWrite(pinReset, HIGH);
 }
 
