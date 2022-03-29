@@ -1,10 +1,15 @@
 Switec X25 library
 ==================
 
-This is an Arduino library for driving Switec X25 miniature 
-stepper motors. It was written specifically for the Switec X25.168,
-and compatible steppers from other manufacturers including the 
-VID29 and MCR1108.
+DISCLAIMER
+==========
+This fork is based on @penfold42 changes and implements all fixes from the @clearwater original repository. With that I managed to work it well with my X27.168 stepper motors as those are sold on AliExpress as X25.168. If you have also X27.168 stepper motors and experiencing weird behavior, use this library. Maybe it's only in my case as I'm using 4 of them at the same time, however this fix it and when something works, do not touch it :D
+
+---------------------------------------
+
+This is an Arduino library for driving Switec X25 miniature stepper motors.
+It was written specifically for the Switec X25.168 or X27.168,
+and compatible steppers from other manufacturers including the VID29 and MCR1108.
 
 For more information including [datasheets](http://guy.carpenter.id.au/gaugette/resources) see the [Gaugette blog](http://guy.carpenter.id.au/gaugette/).
 
